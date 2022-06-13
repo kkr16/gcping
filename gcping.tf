@@ -91,11 +91,18 @@ resource "google_cloud_run_service" "regions" {
   name     = each.key
   location = each.key
 
+  metadata {
+            labels = {
+        "env" = "prod",
+      }
+
+  }
   template {
     metadata {
       annotations = {
         "autoscaling.knative.dev/maxScale" = "3" // Control costs.
         "run.googleapis.com/launch-stage"  = "BETA"
+        "region-name" = each.value
       }
     }
     spec {
@@ -106,6 +113,10 @@ resource "google_cloud_run_service" "regions" {
           name  = "REGION"
           value = each.key
         }
+        env {
+          name = "GOOGLE_CLOUD_PROJECT"
+          value = var.project
+        }
       }
     }
   }
@@ -113,6 +124,7 @@ resource "google_cloud_run_service" "regions" {
     ignore_changes = [
       // This gets added by the Cloud Run API post deploy and causes diffs, can be ignored...
       template[0].metadata[0].annotations["run.googleapis.com/sandbox"],
+      metadata[0].labels["cloud.googleapis.com/location"],
     ]
   }
   traffic {
@@ -226,7 +238,7 @@ resource "google_compute_url_map" "global" {
   name            = "global"
   description     = "a description"
   default_service = google_compute_backend_service.global.id
-  
+
   // Create a host rule to match traffic to alias (gcpping.com)
   host_rule {
     hosts = [
