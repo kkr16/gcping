@@ -117,6 +117,10 @@ resource "google_cloud_run_service" "regions" {
           name = "GOOGLE_CLOUD_PROJECT"
           value = var.project
         }
+        env {
+          name = "GLOBAL_ENDPOINT"
+          value = "https://global.${var.domain}"
+        }        
       }
     }
   }
