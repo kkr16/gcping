@@ -7,7 +7,7 @@ gcpping is both a command line tool and a webapp that reports median latency to
 Google Cloud regions. The webapp is hosted at [gcping.com](http://gcping.com).
 To install the command line tool, see below.
 
-Note: This is not an official Google product.
+Note: This is not an official Google product./
 
 ## CLI Usage
 
