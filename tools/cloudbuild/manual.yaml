@@ -7,6 +7,8 @@ steps:
     id: run-build
     entrypoint: 'npm'
     args: ['--prefix', 'web/', 'run', 'build']
+    waitFor:
+    - install
   - name: gcr.io/$PROJECT_ID/ko
     entrypoint: /bin/sh
     env:
@@ -15,7 +17,9 @@ steps:
     args:
       - -c
       - |
-        echo $(/ko publish ./cmd/ping) > ./ko_container.txt || exit 1
+        echo $(/ko publish ./cmd/ping --tags $SHORT_SHA) > ./image.txt || exit 1
+    waitFor:
+    - run-build
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   #   entrypoint: /bin/bash
   #   args:
