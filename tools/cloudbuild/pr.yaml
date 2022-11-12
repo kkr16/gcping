@@ -1,0 +1,47 @@
+steps:
+  - name: 'node'
+    id: npm-install
+    entrypoint: 'npm'
+    args: ['install', 'web/']
+  - name: 'node'
+    id: npm-build
+    entrypoint: 'npm'
+    args: ['--prefix', 'web/', 'run', 'build']
+    waitFor:
+    - npm-install
+  - name: gcr.io/$PROJECT_ID/ko
+    id: ko-build
+    entrypoint: /bin/sh
+    env:
+      - 'KO_DOCKER_REPO=gcr.io/$PROJECT_ID'
+    # we write the result of ko publish to a txt file so we can persist the variable between steps
+    args:
+      - -c
+      - |
+        echo $(/ko publish ./cmd/ping --tags $_PR_NUMBER) > ./image.txt || exit 1
+    waitFor:
+    - npm-build
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: run-deploy
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        gcloud run deploy gcping-pr-${_PR_NUMBER} \
+        --image=$(cat ./image.txt) \
+        --region=us-central1 \
+        --platform=managed
+    waitFor: 
+    - ko-build
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        gcloud run services add-iam-policy-binding gcping-pr-${_PR_NUMBER} \
+        --member="allUsers" \
+        --role="roles/run.invoker" \
+        --region=us-central1
+    waitFor: 
+    - run-deploy
+    

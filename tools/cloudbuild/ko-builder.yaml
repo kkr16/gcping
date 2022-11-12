@@ -1,0 +1,8 @@
+steps:
+# This build step clones a remote public repository from Github; no
+# credentials are required.
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/GoogleCloudPlatform/cloud-builders-community.git']
+- name: gcr.io/cloud-builders/gcloud
+  args: ["builds", "submit"]
+  dir: "cloud-builders-community/ko"   # I assume that the git clone has created the testing directory
