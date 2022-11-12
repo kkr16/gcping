@@ -27,7 +27,7 @@ Options:
 -url     URL of endpoint list. Default is https://global.gcping.com/api/endpoints
 
 -csv     CSV output; disables verbose output.
--v       Verbose output.
+-v       Verbose output..
 
 Need a website version? See gcping.com
 ```
