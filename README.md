@@ -87,7 +87,7 @@ We build binaries for the following OS's and architectures:
 * Mac 64-bit (Apple Silicon): https://storage.googleapis.com/gcping-release/gcping_darwin_arm64_latest
 * Windows 64-bit: https://storage.googleapis.com/gcping-release/gcping_windows_amd64_latest
 
-Installation looks something like this (changing the URL for your system):
+Installation looks something like this (changing the URL for your system)::;
 
 ```
 curl https://storage.googleapis.com/gcping-release/gcping_linux_amd64_latest > gcping && chmod +x gcping
