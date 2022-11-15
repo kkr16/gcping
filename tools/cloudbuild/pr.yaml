@@ -1,4 +1,5 @@
 logsBucket: 'gs://kr-gcping_gcb_logs'
+
 steps:
   - name: 'node'
     id: install
