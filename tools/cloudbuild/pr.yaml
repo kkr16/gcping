@@ -1,3 +1,4 @@
+logsBucket: 'gs://kr-gcping_gcb_logs'
 steps:
   - name: 'node'
     id: install
@@ -38,4 +39,3 @@ steps:
         --member="allUsers" \
         --role="roles/run.invoker" \
         --region=us-central1
-    logsBucket: 'gs://kr-gcping_gcb_logs'
