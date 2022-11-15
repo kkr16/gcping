@@ -20,7 +20,7 @@ Options:
 -c       Max number of requests to be made at any time.
          By default 10; can't be negative or zero.
 -r       Report latency for an individual region.
--t       Timeout. By default, no timeout.
+-t       Timeout. By default, no timeout.sdfdsf
          Examples: "500ms", "1s", "1s500ms".
 -top     If true, only the top (non-global) region is printed.
 -csv-cum If true, cumulative value is printed in CSV; disables default report.
